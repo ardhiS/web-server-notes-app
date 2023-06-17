@@ -21,10 +21,10 @@ const tambahNote = (request, h) => {
   const sukses = notes.filter((n) => n.id === id).length > 0;
   if (sukses) {
     const response = h.response({
-      status: 'Sukses',
-      message: 'Berhasi membuat catatan',
+      status: 'success',
+      message: 'Berhasil menambahkan catatan',
       data: {
-        noteId: id,
+        nomorNote: id,
       },
     });
 
@@ -40,8 +40,8 @@ const tambahNote = (request, h) => {
 };
 
 const semuaNote = () => ({
-  status: 'Sukses',
-  message: 'Berhasi mengambil semua note',
+  status: 'success',
+  message: 'Berhasil mengambil semua note',
   data: {
     notes,
   },
@@ -51,18 +51,20 @@ const dapetinNoteBerdasarkanId = (request, h) => {
 
   const note = notes.filter((n) => n.id === id)[0];
   if (note !== undefined) {
-    return {
+    const response = h.response({
       status: 'Success',
       data: {
         note,
       },
-    };
+    });
+    response.code(200);
+    return response;
   }
   const response = h.response({
     status: 'fail',
     message: 'Catatan tidak ditemukan',
   });
-  response.code(200);
+  response.code(400);
   return response;
 };
 
@@ -82,18 +84,18 @@ const ediNoteBerdasarkanId = (request, h) => {
     };
 
     const response = h.response({
-      status: 'Sukses',
-      message: 'Berhasil mengubah catatan',
+      status: 'Success',
+      message: 'Catatan berhasil diperbarui',
       data: {
-        notes: notes[index],
+        notes,
       },
     });
     response.code(200);
     return response;
   }
   const response = h.response({
-    status: 'Fail',
-    message: 'Gagal mengubah catatan',
+    status: 'success',
+    message: 'Catatan berhasil diperbaharui',
   });
   response.code(500);
   return response;
@@ -105,8 +107,11 @@ const hapusNoteBerasarkaId = (request, h) => {
   if (index !== -1) {
     notes.splice(index, 1);
     const response = h.response({
-      status: 'Sukses',
-      message: 'Berhail menghapus catatan',
+      status: 'Success',
+      message: 'Catatan berhasil dihapus',
+      data: {
+        notes,
+      },
     });
     response.code(200);
     return response;
@@ -114,7 +119,7 @@ const hapusNoteBerasarkaId = (request, h) => {
 
   const response = h.response({
     status: 'fail',
-    message: 'Gagal menghapus catatan',
+    message: 'Catatan tidak ditemukan',
   });
   response.code(400);
   return response;
